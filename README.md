@@ -64,11 +64,10 @@
 
 Introducing DeepSeek VL,
 
- - **Superior General Capabilities:** DeepSeek .
 
- - **Proficient in Coding and Math:** DeepSeek .
+ - **High Resoluation:**
 
- - **Mastery in Chinese Language:** Based on our evaluation,.
+
 
 ## 2. Model Downloads
 
