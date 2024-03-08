@@ -206,7 +206,12 @@ print(f"{prepare_inputs['sft_format'][0]}", answer)
 
 ### CLI Chat
 ```bash
-python cli_chat.py --model_path deepseek-ai/deepseek-vl-7b-chat
+
+python cli_chat.py --model_path "deepseek-ai/deepseek-vl-7b-chat"
+
+# or local path
+python cli_chat.py --model_path "local model path"
+
 ```
 
 ## 6. FAQ
