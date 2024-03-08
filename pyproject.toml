@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=40.6.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepseek_vl"
+version = "1.0.0"
+description = "DeepSeek-VL"
+authors = [{name = "DeepSeek-AI"}]
+license = "MIT"
+urls = {homepage = "https://github.com/deepseek-ai/DeepSeek-VL"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "transformers>=4.38.2",
+    "timm>=0.9.16",
+    "gradio>=4.13.0",
+    "accelerate",
+    "sentencepiece",
+]
+
+[tool.setuptools]
+packages = {find = {exclude = ["images"]}}
