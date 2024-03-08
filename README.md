@@ -153,8 +153,8 @@ pip install -r requirements.txt -e .
 import torch
 from transformers import AutoModelForCausalLM
 
-from deepseek_vlm.models import VLChatProcessor, MultiModalityCausalLM
-from deepseek_vlm.utils.io import load_pil_images
+from deepseek_vl.models import VLChatProcessor, MultiModalityCausalLM
+from deepseek_vl.utils.io import load_pil_images
 
 
 # specify the path to the model

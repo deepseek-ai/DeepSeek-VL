@@ -150,7 +150,6 @@ class VLMImageProcessor(BaseImageProcessor):
         return [3, self.image_size, self.image_size]
 
 
-# AutoConfig.register("deepseek_vlm", VLMImageProcessorConfig)
 AutoImageProcessor.register(VLMImageProcessorConfig, VLMImageProcessor)
 
 

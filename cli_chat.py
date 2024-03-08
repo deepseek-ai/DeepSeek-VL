@@ -148,7 +148,8 @@ def chat(args, tokenizer, vl_chat_processor, vl_gpt, generation_config):
 
                 sys.stdout.write("\n")
                 sys.stdout.flush()
-                conv.messages[-1][-1] = answer
+                conv.update_last_message(answer)
+                # conv.messages[-1][-1] = answer
 
 
 def main(args):
