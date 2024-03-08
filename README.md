@@ -72,16 +72,21 @@ Introducing DeepSeek VL,
 
 ## 2. Model Downloads
 
-We release the DeepSeek LLM 7B/67B, including both base and chat models, to the public. To support a broader and more diverse range of research within both academic and commercial communities, we are providing access to the intermediate checkpoints of the base model from its training process. Please **note** that the use of this model is subject to the terms outlined in [License section](#8-license). Commercial usage is permitted under these terms.
+We release the DeepSeek-VL family, including 1.3B-base, 1.3B-chat, 7b-base and 7b-chat models, to the public.
+To support a broader and more diverse range of research within both academic and commercial communities.
+Please note that the use of this model is subject to the terms outlined in [License section](#8-license). Commercial usage is
+permitted under these terms.
 
 ### Huggingface
 
-|         Model         | Sequence Length |                                Download                                 |
-|:---------------------:|:---------------:|:-----------------------------------------------------------------------:|
-| DeepSeek VL 7B Base  |      4096       | 🤗 [HuggingFace](https://huggingface.co/deepseek-ai/deepseek-llm-7b-base)  |
-| DeepSeek VL 7B Chat  |      4096       | 🤗 [HuggingFace](https://huggingface.co/deepseek-ai/deepseek-llm-7b-chat)  |
+| Model                 | Sequence Length | Download                                                                    |
+|-----------------------|-----------------|-----------------------------------------------------------------------------|
+| DeepSeek-VL-1.3B-base | 4096            | [🤗 Hugging Face](https://huggingface.co/deepseek-ai/deepseek-vl-1.3b-base) |
+| DeepSeek-VL-1.3B-chat | 4096            | [🤗 Hugging Face](https://huggingface.co/deepseek-ai/deepseek-vl-1.3b-chat) |
+| DeepSeek-VL-7B-base   | 4096            | [🤗 Hugging Face](https://huggingface.co/deepseek-ai/deepseek-vl-7b-base)   |
+| DeepSeek-VL-7B-chat   | 4096            | [🤗 Hugging Face](https://huggingface.co/deepseek-ai/deepseek-vl-7b-chat)   |
 
-## 3. Evaluation Results
+# 3. Evaluation Results
 
 ### Base Model
 
@@ -139,53 +144,73 @@ We release the training loss curve and several benchmark metrics curves, as deta
 On the basis of `Python >= 3.8` environment, install the necessary dependencies by running the following command:
 
 ```shell
-pip install -r requirements.txt
+pip install -r requirements.txt -e .
 ```
 
 ### Inference with Huggingface's Transformers
 
 You can directly employ [Huggingface's Transformers](https://github.com/huggingface/transformers) for model inference.
 
-**Text Completion**
+**Simple Inference Example**
 
 ```python
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, GenerationConfig
+from transformers import AutoModelForCausalLM
 
-model_name = "deepseek-ai/deepseek-llm-67b-base"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
-model.generation_config = GenerationConfig.from_pretrained(model_name)
-model.generation_config.pad_token_id = model.generation_config.eos_token_id
+from deepseek_vlm.models import VLChatProcessor, MultiModalityCausalLM
+from deepseek_vlm.utils.io import load_pil_images
 
-text = "An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is"
-inputs = tokenizer(text, return_tensors="pt")
-outputs = model.generate(**inputs.to(model.device), max_new_tokens=100)
 
-result = tokenizer.decode(outputs[0], skip_special_tokens=True)
-print(result)
+# specify the path to the model
+model_path = "deepseek-ai/deepseek-vl-7b-chat"
+vl_chat_processor: VLChatProcessor = VLChatProcessor.from_pretrained(model_path)
+tokenizer = vl_chat_processor.tokenizer
+
+vl_gpt: MultiModalityCausalLM = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
+vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
+
+conversation = [
+    {
+        "role": "User",
+        "content": "<image_placeholder>Describe each stage of this image.",
+        "images": ["./images/training_pipelines.png"]
+    },
+    {
+        "role": "Assistant",
+        "content": ""
+    }
+]
+
+# load images and prepare for inputs
+pil_images = load_pil_images(conversation)
+prepare_inputs = vl_chat_processor(
+    conversations=conversation,
+    images=pil_images,
+    force_batchify=True
+).to(vl_gpt.device)
+
+# run image encoder to get the image embeddings
+inputs_embeds = vl_gpt.prepare_inputs_embeds(**prepare_inputs)
+
+# run the model to get the response
+outputs = vl_gpt.language_model.generate(
+    inputs_embeds=inputs_embeds,
+    attention_mask=prepare_inputs.attention_mask,
+    pad_token_id=tokenizer.eos_token_id,
+    bos_token_id=tokenizer.bos_token_id,
+    eos_token_id=tokenizer.eos_token_id,
+    max_new_tokens=512,
+    do_sample=False,
+    use_cache=True
+)
+
+answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
+print(f"{prepare_inputs['sft_format'][0]}", answer)
 ```
 
-**Chat Completion**
-
-```python
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, GenerationConfig
-
-model_name = "deepseek-ai/deepseek-llm-67b-chat"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
-model.generation_config = GenerationConfig.from_pretrained(model_name)
-model.generation_config.pad_token_id = model.generation_config.eos_token_id
-
-messages = [
-    {"role": "user", "content": "Who are you?"}
-]
-input_tensor = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt")
-outputs = model.generate(input_tensor.to(model.device), max_new_tokens=100)
-
-result = tokenizer.decode(outputs[0][input_tensor.shape[1]:], skip_special_tokens=True)
-print(result)
+**CLI Chat**
+```bash
+python cli_chat.py --model_path deepseek-ai/deepseek-vl-7b-chat
 ```
 
 Avoiding the use of the provided function `apply_chat_template`, you can also interact with our model following the sample template. Note that `messages` should be replaced by your input.
