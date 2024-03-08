@@ -188,7 +188,6 @@ if __name__ == "__main__":
 """
 
 CUDA_VISIBLE_DEVICES=4 python cli.py --model_path "/home/liuwen/3fs_shared/ckpts/deepseek-vl-7b-chat"
-
-CUDA_VISIBLE_DEVICES=2 python cli.py --model_path "/home/liuwen/3fs_shared/ckpts/siglip_1B_HF"
+CUDA_VISIBLE_DEVICES=4 python cli.py --model_path "deepseek-ai/deepseek-vl-7b-chat"
 
 """
