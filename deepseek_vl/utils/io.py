@@ -3,7 +3,8 @@ import PIL.Image
 from typing import Dict, List
 import torch
 from transformers import AutoModelForCausalLM
-from deepseek_vlm.models import VLChatProcessor, MultiModalityCausalLM
+
+from deepseek_vl.models import VLChatProcessor, MultiModalityCausalLM
 
 
 def load_pretrained_model(model_path: str):

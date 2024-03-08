@@ -5,12 +5,11 @@ from PIL.Image import Image
 from typing import List, Dict, Union
 import torch
 
-from transformers import AutoTokenizer, AutoImageProcessor
 from transformers.processing_utils import ProcessorMixin
 from transformers import LlamaTokenizerFast
 
-from deepseek_vlm.models.image_processing_vlm import VLMImageProcessor
-from deepseek_vlm.utils.conversation import get_conv_template
+from deepseek_vl.models.image_processing_vlm import VLMImageProcessor
+from deepseek_vl.utils.conversation import get_conv_template
 
 
 class DictOutput(object):

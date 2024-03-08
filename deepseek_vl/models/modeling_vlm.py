@@ -10,8 +10,8 @@ from transformers import (
     LlamaForCausalLM
 )
 
-from deepseek_vlm.models.projector import MlpProjector
-from deepseek_vlm.models.clip_encoder import CLIPVisionTower, HybridVisionTower
+from deepseek_vl.models.projector import MlpProjector
+from deepseek_vl.models.clip_encoder import CLIPVisionTower, HybridVisionTower
 
 
 def model_name_to_cls(cls_name):

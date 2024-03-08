@@ -8,7 +8,8 @@ import readline
 from threading import Thread
 import torch
 from transformers import TextIteratorStreamer
-from deepseek_vlm.utils.io import load_pretrained_model
+
+from deepseek_vl.utils.io import load_pretrained_model
 
 
 def load_image(image_file):

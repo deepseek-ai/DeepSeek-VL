@@ -5,9 +5,9 @@ version = '1.0.0'
 print(version)
 
 setup(
-    name='deepseek_vlm',
+    name='deepseek_vl',
     version=version,
-    description='DeekSeel-VLM',
+    description='DeekSeel-VL',
     author='DeepSeek-AI',
     license='MIT',
     url='https://github.com/deepseek-ai/DeepSeek-VL',

@@ -5,8 +5,8 @@ import torch.nn as nn
 import torchvision.transforms
 from einops import rearrange
 
-from deepseek_vlm.models.siglip_vit import create_siglip_vit
-from deepseek_vlm.models.sam import create_sam_vit
+from deepseek_vl.models.siglip_vit import create_siglip_vit
+from deepseek_vl.models.sam import create_sam_vit
 
 
 class CLIPVisionTower(nn.Module):
