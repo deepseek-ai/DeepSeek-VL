@@ -147,11 +147,7 @@ On the basis of `Python >= 3.8` environment, install the necessary dependencies 
 pip install -r requirements.txt -e .
 ```
 
-### Inference with Huggingface's Transformers
-
-You can directly employ [Huggingface's Transformers](https://github.com/huggingface/transformers) for model inference.
-
-**Simple Inference Example**
+### Simple Inference Example
 
 ```python
 import torch
@@ -208,7 +204,7 @@ answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
 print(f"{prepare_inputs['sft_format'][0]}", answer)
 ```
 
-**CLI Chat**
+### CLI Chat
 ```bash
 python cli_chat.py --model_path deepseek-ai/deepseek-vl-7b-chat
 ```
