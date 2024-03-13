@@ -22,8 +22,8 @@ from __future__ import annotations
 import logging
 from typing import List, Tuple
 
-from app_modules.presets import *
-from app_modules.utils import *
+from app_modules.presets import gr
+from app_modules.utils import detect_converted_mark, convert_asis, convert_mdtext
 
 
 def compact_text_chunks(self, prompt, text_chunks: List[str]) -> List[str]:
