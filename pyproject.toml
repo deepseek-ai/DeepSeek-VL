@@ -13,7 +13,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
     "torch>=2.0.1",
-    "transformers>=4.38.2",
+    "transformers==4.38.1",
     "timm>=0.9.16",
     "gradio>=4.13.0",
     "accelerate",
