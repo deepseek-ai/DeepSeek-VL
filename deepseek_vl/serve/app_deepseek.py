@@ -316,6 +316,9 @@ def retry(
 
 
 def build_demo(MODELS):
+    with open("deepseek_vl/serve/assets/custom.css", "r", encoding="utf-8") as f:
+        customCSS = f.read()
+
     with gr.Blocks(theme=gr.themes.Soft()) as demo:
         history = gr.State([])
         input_text = gr.State()
@@ -359,7 +362,7 @@ def build_demo(MODELS):
             with gr.Column():
                 image_box = gr.Image(type="pil")
 
-                with gr.Tab(label="Parameter Setting") as _:
+                with gr.Tab(label="Parameter Setting") as parameter_row:
                     top_p = gr.Slider(
                         minimum=-0,
                         maximum=1.0,

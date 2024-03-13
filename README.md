@@ -177,6 +177,8 @@ python cli_chat.py --model_path "local model path"
 
 ### Gradio Demo
 ```bash
+pip install -e .[gradio]
+
 python deepseek_vl/serve/app_deepseek.py
 ```
 ![](./images/gradio_demo.png)

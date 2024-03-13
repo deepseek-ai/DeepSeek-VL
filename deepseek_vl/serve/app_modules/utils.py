@@ -24,6 +24,7 @@ import html
 import logging
 import re
 import time
+import os
 
 import mdtex2html
 from app_modules.presets import ALREADY_CONVERTED_MARK
@@ -40,6 +41,7 @@ def configure_logger():
     logger.setLevel(logging.DEBUG)
 
     timestr = time.strftime("%Y%m%d-%H%M%S")
+    os.makedirs("deepseek_vl/serve/logs", exist_ok=True)
     file_handler = logging.FileHandler(
         f"deepseek_vl/serve/logs/{timestr}_gradio_log.log"
     )

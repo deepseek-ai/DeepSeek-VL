@@ -1,4 +1,4 @@
-torch>=2.0.1
+torch==2.0.1
 transformers>=4.38.2
 timm>=0.9.16
 accelerate
@@ -7,17 +7,13 @@ attrdict
 einops
 
 # for gradio demo
-gradio==3.27.0
-mdtex2html
-pypinyin
-tiktoken
-socksio
-tqdm
-colorama
-duckduckgo_search
-Pygments
-llama_index
-langchain
-markdown
-markdown2
-SentencePiece
+gradio==3.48.0
+gradio-client==0.6.1
+mdtex2html==1.3.0
+pypinyin==0.50.0
+tiktoken==0.5.2
+tqdm==4.64.0
+colorama==0.4.5
+Pygments==2.12.0
+markdown==3.4.1
+SentencePiece==0.1.96
