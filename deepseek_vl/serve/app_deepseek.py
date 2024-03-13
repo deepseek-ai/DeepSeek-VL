@@ -359,7 +359,7 @@ def build_demo(MODELS):
             with gr.Column():
                 image_box = gr.Image(type="pil")
 
-                with gr.Tab(label="Parameter Setting") as parameter_row:
+                with gr.Tab(label="Parameter Setting") as _:
                     top_p = gr.Slider(
                         minimum=-0,
                         maximum=1.0,
