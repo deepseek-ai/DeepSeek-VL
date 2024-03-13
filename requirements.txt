@@ -1,8 +1,23 @@
 torch>=2.0.1
 transformers>=4.38.2
 timm>=0.9.16
-gradio>=4.13.0
 accelerate
 sentencepiece
 attrdict
 einops
+
+# for gradio demo
+gradio==3.27.0
+mdtex2html
+pypinyin
+tiktoken
+socksio
+tqdm
+colorama
+duckduckgo_search
+Pygments
+llama_index
+langchain
+markdown
+markdown2
+SentencePiece
