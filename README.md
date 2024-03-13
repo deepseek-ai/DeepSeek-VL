@@ -192,7 +192,7 @@ This code repository is licensed under [the MIT License](https://github.com/deep
 ```
 @misc{lu2024deepseekvl,
       title={DeepSeek-VL: Towards Real-World Vision-Language Understanding},
-      author={Haoyu Lu and Wen Liu and Bo Zhang and Bingxuan Wang and Kai Dong and Bo Liu and Jingxiang Sun and Tongzheng Ren and Zhuoshu Li and Yaofeng Sun and Chengqi Deng and Hanwei Xu and Zhenda Xie and Chong Ruan},
+      author={Haoyu Lu and Wen Liu and Bo Zhang and Bingxuan Wang and Kai Dong and Bo Liu and Jingxiang Sun and Tongzheng Ren and Zhuoshu Li and Hao Yang and Yaofeng Sun and Chengqi Deng and Hanwei Xu and Zhenda Xie and Chong Ruan},
       year={2024},
       eprint={2403.05525},
       archivePrefix={arXiv},

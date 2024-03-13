@@ -4,7 +4,7 @@ COPYRIGHT      = "DeepSeek."
 PROJECT_PATH   = deepseek_vl
 SHELL          = /bin/bash
 SOURCE_FOLDERS = deepseek_vl
-PYTHON_FILES   = $(shell find $(SOURCE_FOLDERS) -type f -name "*.py" -o -name "*.pyi")
+PYTHON_FILES   = $(shell find $(SOURCE_FOLDERS) -type f -name "*.py" -o -name "*.pyi") cli_chat.py inference.py
 COMMIT_HASH    = $(shell git log -1 --format=%h)
 PATH           := $(HOME)/go/bin:$(PATH)
 PYTHON         ?= $(shell command -v python3 || command -v python)

@@ -1,17 +1,46 @@
+# Copyright (c) 2023-2024 DeepSeek.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 # -*- coding:utf-8 -*-
 
-import gradio as gr
-import torch
 import base64
 from io import BytesIO
 
-from app_modules.gradio_utils import (cancel_outputing, delete_last_conversation, reset_state,
-                                      reset_textbox, transfer_input, wrap_gen_fn)
+import gradio as gr
+import torch
+from app_modules.gradio_utils import (
+    cancel_outputing,
+    delete_last_conversation,
+    reset_state,
+    reset_textbox,
+    transfer_input,
+    wrap_gen_fn,
+)
 from app_modules.overwrites import reload_javascript
 from app_modules.presets import CONCURRENT_COUNT, description, description_top, title
-from app_modules.utils import (configure_logger, is_variable_assigned,
-                               strip_stop_words)
-from deepseek_vl.serve.inference import convert_conversation_to_prompts, deepseek_generate, load_model
+from app_modules.utils import configure_logger, is_variable_assigned, strip_stop_words
+
+from deepseek_vl.serve.inference import (
+    convert_conversation_to_prompts,
+    deepseek_generate,
+    load_model,
+)
 from deepseek_vl.utils.conversation import SeparatorStyle
 
 
@@ -31,7 +60,9 @@ models = load_models()
 MODELS = sorted(list(models.keys()))
 
 
-def generate_prompt_with_history(text, image, history, vl_chat_processor, tokenizer, max_length=2048):
+def generate_prompt_with_history(
+    text, image, history, vl_chat_processor, tokenizer, max_length=2048
+):
     """
     Generate a prompt with history for the deepseek application.
 
@@ -57,8 +88,10 @@ def generate_prompt_with_history(text, image, history, vl_chat_processor, tokeni
         conversation.messages = history
 
     if image is not None:
-        if '<image_placeholder>' not in text:
-            text = '<image_placeholder>' + '\n' + text  # append the <image_placeholder> in a new line after the text prompt
+        if "<image_placeholder>" not in text:
+            text = (
+                "<image_placeholder>" + "\n" + text
+            )  # append the <image_placeholder> in a new line after the text prompt
         text = (text, image)
 
     conversation.append_message(conversation.roles[user_role_ind], text)
@@ -73,7 +106,11 @@ def generate_prompt_with_history(text, image, history, vl_chat_processor, tokeni
 
     for _ in range(rounds):
         current_prompt = get_prompt(conversation)
-        current_prompt = current_prompt.replace("</s>", "") if sft_format == "deepseek" else current_prompt
+        current_prompt = (
+            current_prompt.replace("</s>", "")
+            if sft_format == "deepseek"
+            else current_prompt
+        )
 
         if torch.tensor(tokenizer.encode(current_prompt)).size(-1) <= max_length:
             return conversation_copy
@@ -101,11 +138,11 @@ def to_gradio_chatbot(conv):
             if type(msg) is tuple:
                 msg, image = msg
                 if isinstance(image, str):
-                    with open(image, 'rb') as f:
+                    with open(image, "rb") as f:
                         data = f.read()
                     img_b64_str = base64.b64encode(data).decode()
                     image_str = f'<video src="data:video/mp4;base64,{img_b64_str}" controls width="426" height="240"></video>'
-                    msg = msg.replace('\n'.join(['<image_placeholder>'] * 4), image_str)
+                    msg = msg.replace("\n".join(["<image_placeholder>"] * 4), image_str)
                 else:
                     max_hw, min_hw = max(image.size), min(image.size)
                     aspect_ratio = max_hw / min_hw
@@ -122,7 +159,7 @@ def to_gradio_chatbot(conv):
                     image.save(buffered, format="JPEG")
                     img_b64_str = base64.b64encode(buffered.getvalue()).decode()
                     img_str = f'<img src="data:image/png;base64,{img_b64_str}" alt="user upload image" />'
-                    msg = msg.replace('<image_placeholder>', img_str)
+                    msg = msg.replace("<image_placeholder>", img_str)
             ret.append([msg, None])
         else:
             ret[-1][-1] = msg
@@ -135,24 +172,24 @@ def to_gradio_history(conv):
 
 
 def get_prompt(conv) -> str:
-        """Get the prompt for generation."""
-        system_prompt = conv.system_template.format(system_message=conv.system_message)
-        if conv.sep_style == SeparatorStyle.DeepSeek:
-            seps = [conv.sep, conv.sep2]
-            if system_prompt == "" or system_prompt is None:
-                ret = ""
-            else:
-                ret = system_prompt + seps[0]
-            for i, (role, message) in enumerate(conv.messages):
-                if message:
-                    if type(message) is tuple:  # multimodal message
-                        message, _ = message
-                    ret += role + ": " + message + seps[i % 2]
-                else:
-                    ret += role + ":"
-            return ret
+    """Get the prompt for generation."""
+    system_prompt = conv.system_template.format(system_message=conv.system_message)
+    if conv.sep_style == SeparatorStyle.DeepSeek:
+        seps = [conv.sep, conv.sep2]
+        if system_prompt == "" or system_prompt is None:
+            ret = ""
         else:
-            return conv.get_prompt
+            ret = system_prompt + seps[0]
+        for i, (role, message) in enumerate(conv.messages):
+            if message:
+                if type(message) is tuple:  # multimodal message
+                    message, _ = message
+                ret += role + ": " + message + seps[i % 2]
+            else:
+                ret += role + ":"
+        return ret
+    else:
+        return conv.get_prompt
 
 
 @wrap_gen_fn
@@ -197,7 +234,12 @@ def predict(
         return
 
     conversation = generate_prompt_with_history(
-        text, image, history, vl_chat_processor, tokenizer, max_length=max_context_length_tokens
+        text,
+        image,
+        history,
+        vl_chat_processor,
+        tokenizer,
+        max_length=max_context_length_tokens,
     )
     prompts = convert_conversation_to_prompts(conversation)
 
@@ -221,7 +263,9 @@ def predict(
             response = strip_stop_words(full_response, stop_words)
             conversation.update_last_message(response)
             gradio_chatbot_output[-1][1] = response
-            yield gradio_chatbot_output, to_gradio_history(conversation), "Generating..."
+            yield gradio_chatbot_output, to_gradio_history(
+                conversation
+            ), "Generating..."
 
     print("flushed result to gradio")
     torch.cuda.empty_cache()
@@ -272,9 +316,6 @@ def retry(
 
 
 def build_demo(MODELS):
-    with open("deepseek_vl/serve/assets/custom.css", "r", encoding="utf-8") as f:
-        customCSS = f.read()
-
     with gr.Blocks(theme=gr.themes.Soft()) as demo:
         history = gr.State([])
         input_text = gr.State()
@@ -297,7 +338,9 @@ def build_demo(MODELS):
                     )
                 with gr.Row():
                     with gr.Column(scale=4):
-                        text_box = gr.Textbox(show_label=False, placeholder="Enter text", container=False)
+                        text_box = gr.Textbox(
+                            show_label=False, placeholder="Enter text", container=False
+                        )
                     with gr.Column(
                         min_width=70,
                     ):
@@ -367,28 +410,28 @@ def build_demo(MODELS):
 
         examples_list = [
             [
-                'deepseek_vl/serve/examples/rap.jpeg',
-                'Can you write me a master rap song that rhymes very well based on this image?',
+                "deepseek_vl/serve/examples/rap.jpeg",
+                "Can you write me a master rap song that rhymes very well based on this image?",
             ],
             [
-                'deepseek_vl/serve/examples/app.png',
-                'What is this app about?',
+                "deepseek_vl/serve/examples/app.png",
+                "What is this app about?",
             ],
             [
-                'deepseek_vl/serve/examples/pipeline.png',
-                'Help me write a python code based on the image.',
+                "deepseek_vl/serve/examples/pipeline.png",
+                "Help me write a python code based on the image.",
             ],
             [
-                'deepseek_vl/serve/examples/chart.png',
-                'Could you help me to re-draw this picture with python codes?',
+                "deepseek_vl/serve/examples/chart.png",
+                "Could you help me to re-draw this picture with python codes?",
             ],
             [
-                'deepseek_vl/serve/examples/mirror.png',
-                'How many people are there in the image. Why?',
+                "deepseek_vl/serve/examples/mirror.png",
+                "How many people are there in the image. Why?",
             ],
             [
-                'deepseek_vl/serve/examples/puzzle.png',
-                'Can this 2 pieces combine together?',
+                "deepseek_vl/serve/examples/puzzle.png",
+                "Can this 2 pieces combine together?",
             ],
         ]
         gr.Examples(examples=examples_list, inputs=[image_box, text_box])
@@ -429,7 +472,9 @@ def build_demo(MODELS):
             show_progress=True,
         )
 
-        reset_args = dict(fn=reset_textbox, inputs=[], outputs=[text_box, status_display])
+        reset_args = dict(
+            fn=reset_textbox, inputs=[], outputs=[text_box, status_display]
+        )
 
         predict_events = [
             text_box.submit(**transfer_input_args).then(**predict_args),

@@ -1,3 +1,22 @@
+# Copyright (c) 2023-2024 DeepSeek.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 # -*- coding:utf-8 -*-
 from __future__ import annotations
 
@@ -7,25 +26,28 @@ import re
 import time
 
 import mdtex2html
+from app_modules.presets import ALREADY_CONVERTED_MARK
 from markdown import markdown
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import ClassNotFound, get_lexer_by_name, guess_lexer
 
-from app_modules.presets import ALREADY_CONVERTED_MARK
-
-logger = logging.getLogger('gradio_logger')
+logger = logging.getLogger("gradio_logger")
 
 
 def configure_logger():
-    logger = logging.getLogger('gradio_logger')
+    logger = logging.getLogger("gradio_logger")
     logger.setLevel(logging.DEBUG)
 
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    file_handler = logging.FileHandler(f'deepseek_vl/serve/logs/{timestr}_gradio_log.log')
+    file_handler = logging.FileHandler(
+        f"deepseek_vl/serve/logs/{timestr}_gradio_log.log"
+    )
     console_handler = logging.StreamHandler()
 
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
 
@@ -85,7 +107,9 @@ def normalize_markdown(md_text: str) -> str:  # deprecated
             inside_list = True
             normalized_lines.append(line)
         elif inside_list and line.strip() == "":
-            if i < len(lines) - 1 and not re.match(r"^(\d+\.|-|\*|\+)\s", lines[i + 1].strip()):
+            if i < len(lines) - 1 and not re.match(
+                r"^(\d+\.|-|\*|\+)\s", lines[i + 1].strip()
+            ):
                 normalized_lines.append(line)
             continue
         else:
@@ -119,7 +143,7 @@ def convert_mdtext(md_text):
 
 
 def convert_asis(userinput):
-    return f'<p style=\"white-space:pre-wrap;\">{html.escape(userinput)}</p>{ALREADY_CONVERTED_MARK}'
+    return f'<p style="white-space:pre-wrap;">{html.escape(userinput)}</p>{ALREADY_CONVERTED_MARK}'
 
 
 def is_stop_word_or_prefix(s: str, stop_words: list) -> bool:
@@ -188,7 +212,9 @@ def add_language_tag(text):
         code_block = match.group(2)
         if match.group(2).startswith("\n"):
             language = detect_language(code_block)
-            return f"```{language}{code_block}```" if language else f"```\n{code_block}```"
+            return (
+                f"```{language}{code_block}```" if language else f"```\n{code_block}```"
+            )
         else:
             return match.group(1) + code_block + "```"
 
