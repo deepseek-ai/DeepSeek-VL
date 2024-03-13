@@ -132,9 +132,8 @@ def chat(args, tokenizer, vl_chat_processor, vl_gpt, generation_config):
 
                 while cur_img_idx < num_images:
                     try:
-                        image_file = input(
-                            f"({cur_img_idx + 1}/{num_images}) Input the image file path: "
-                        )
+                        image_file = input(f"({cur_img_idx + 1}/{num_images}) Input the image file path: ")
+                        image_file = image_file.strip() # trim whitespaces around path, enables drop-in from for example Dolphin
 
                     except KeyboardInterrupt:
                         print()
