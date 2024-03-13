@@ -8,7 +8,7 @@ from threading import Thread
 import torch
 from transformers import TextIteratorStreamer
 
-from deepseek_vl.utils.io import load_pretrained_model
+from deepseek_vl.utils.io import load_pretrained_model, get_device_and_dtype
 
 
 def load_image(image_file):
@@ -34,13 +34,13 @@ def get_help_message(image_token):
 
 @torch.inference_mode()
 def response(args, conv, pil_images, tokenizer, vl_chat_processor, vl_gpt, generation_config):
-
+    _, dtype = get_device_and_dtype()
     prompt = conv.get_prompt()
     prepare_inputs = vl_chat_processor.__call__(
         prompt=prompt,
         images=pil_images,
         force_batchify=True
-    ).to(vl_gpt.device)
+    ).to(vl_gpt.device, dtype=dtype)
 
     # run image encoder to get the image embeddings
     inputs_embeds = vl_gpt.prepare_inputs_embeds(**prepare_inputs)

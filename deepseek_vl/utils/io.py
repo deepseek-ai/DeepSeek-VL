@@ -52,10 +52,12 @@ def load_pretrained_model(model_path: str):
     vl_chat_processor: VLChatProcessor = VLChatProcessor.from_pretrained(model_path)
     tokenizer = vl_chat_processor.tokenizer
 
+    device, dtype = get_device_and_dtype()
+
     vl_gpt: MultiModalityCausalLM = AutoModelForCausalLM.from_pretrained(
         model_path, trust_remote_code=True
     )
-    vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
+    vl_gpt = vl_gpt.to(device, dtype=dtype).eval()
 
     return tokenizer, vl_chat_processor, vl_gpt
 
