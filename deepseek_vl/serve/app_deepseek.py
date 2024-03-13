@@ -17,7 +17,7 @@ from deepseek_vl.utils.conversation import SeparatorStyle
 
 def load_models():
     models = {
-        "DeepSeek-VL 7B": "/hf3fs-jd/prod/deepseek/shared/liuwen/ckpts/deepseek-vl-7b-chat",
+        "DeepSeek-VL 7B": "deepseek-ai/deepseek-vl-7b-chat",
     }
 
     for model_name in models:
