@@ -10,7 +10,7 @@ authors = [{name = "DeepSeek-AI"}]
 license = {file = "LICENSE-CODE"}
 urls = {homepage = "https://github.com/deepseek-ai/DeepSeek-VL"}
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.8, <3.10"
 dependencies = [
     "torch>=2.0.1",
     "transformers>=4.38.2",
