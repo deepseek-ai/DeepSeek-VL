@@ -65,11 +65,16 @@ Introducing DeepSeek-VL, an open-source Vision-Language (VL) Model designed for 
 
 [DeepSeek-VL: Towards Real-World Vision-Language Understanding](https://arxiv.org/abs/2403.05525)
 
-Haoyu Lu*, Wen Liu*, Bo Zhang**, Bingxuan Wang, Kai Dong, Bo Liu, Jingxiang Sun, Tongzheng Ren, Zhuoshu Li, Yaofeng Sun, Chengqi Deng, Hanwei Xu, Zhenda Xie, Chong Ruan (*Equal Contribution, **Project Lead)
+Haoyu Lu*, Wen Liu*, Bo Zhang**, Bingxuan Wang, Kai Dong, Bo Liu, Jingxiang Sun, Tongzheng Ren, Zhuoshu Li, Hao Yang, Yaofeng Sun, Chengqi Deng, Hanwei Xu, Zhenda Xie, Chong Ruan (*Equal Contribution, **Project Lead)
 
 ![](https://github.com/deepseek-ai/DeepSeek-VL/blob/main/images/sample.jpg)
 
 ## 2. Release
+
+<details>
+<summary>✅ <b>2024-03-13</b>: Support DeepSeek-VL gradio demo.
+
+</details>
 
 <details>
 <summary>✅ <b>2024-03-11</b>: DeepSeek-VL family released, including <code>DeepSeek-VL-7B-base</code>, <code>DeepSeek-VL-7B-chat</code>, <code>DeepSeek-VL-1.3B-base</code>, and <code>DeepSeek-VL-1.3B-chat</code>.</summary>
@@ -169,6 +174,14 @@ python cli_chat.py --model_path "deepseek-ai/deepseek-vl-7b-chat"
 # or local path
 python cli_chat.py --model_path "local model path"
 ```
+
+### Gradio Demo
+```bash
+python deepseek_vl/serve/app_deepseek.py
+```
+![](./images/gradio_demo.png)
+
+Have Fun!
 
 ## 5. License
 
