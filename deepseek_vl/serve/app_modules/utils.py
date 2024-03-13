@@ -22,9 +22,9 @@ from __future__ import annotations
 
 import html
 import logging
+import os
 import re
 import time
-import os
 
 import mdtex2html
 from app_modules.presets import ALREADY_CONVERTED_MARK
