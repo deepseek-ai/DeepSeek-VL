@@ -50,9 +50,11 @@ def convert_conversation_to_prompts(conversation: Conversation):
     for i in range(0, len(messages), 2):
         prompt = {
             "role": messages[i][0],
-            "content": messages[i][1][0]
-            if isinstance(messages[i][1], tuple)
-            else messages[i][1],
+            "content": (
+                messages[i][1][0]
+                if isinstance(messages[i][1], tuple)
+                else messages[i][1]
+            ),
             "images": [messages[i][1][1]] if isinstance(messages[i][1], tuple) else [],
         }
         response = {"role": messages[i + 1][0], "content": messages[i + 1][1]}
