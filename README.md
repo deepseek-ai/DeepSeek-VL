@@ -55,9 +55,9 @@
 
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2403.05525"><b>Paper Link</b>👁️</a>
+  <a href="https://arxiv.org/abs/2403.05525"><b>Paper Link</b></a> |
+  <a href="https://huggingface.co/spaces/deepseek-ai/DeepSeek-VL-7B"><b>Demo</b></a>
 </p>
-
 
 ## 1. Introduction
 
