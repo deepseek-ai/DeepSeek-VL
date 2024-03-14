@@ -72,6 +72,12 @@ Haoyu Lu*, Wen Liu*, Bo Zhang**, Bingxuan Wang, Kai Dong, Bo Liu, Jingxiang Sun,
 ## 2. Release
 
 <details>
+<summary>✅ <b>2024-03-14</b>: Demo for DeepSeek-VL-7B available on <a href="https://huggingface.co/spaces/deepseek-ai/DeepSeek-VL-7B">Hugging Face</a>.</summary>
+<br>Check out the gradio demo of DeepSeek-VL-7B at <a href="https://huggingface.co/spaces/deepseek-ai/DeepSeek-VL-7B">https://huggingface.co/spaces/deepseek-ai/DeepSeek-VL-7B</a>. Experience its capabilities firsthand!
+</details>
+
+
+<details>
 <summary>✅ <b>2024-03-13</b>: Support DeepSeek-VL gradio demo.
 
 </details>
