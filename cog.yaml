@@ -1,0 +1,19 @@
+# Configuration for Cog ⚙️
+# Reference: https://github.com/replicate/cog/blob/main/docs/yaml.md
+
+build:
+  gpu: true
+  python_version: "3.9"
+  python_packages:
+    - "accelerate==0.27.2"
+    - "attrdict==2.0.1"
+    - "einops==0.7.0"
+    - "sentencepiece==0.2.0"
+    - "torch==2.0.1"
+    - "torchvision==0.15.2"
+    - "transformers>=4.38.2"
+    - "timm>=0.9.16"
+    - "hf_transfer==0.1.6"
+
+# predict.py defines how predictions are run on your model
+predict: "predict.py:Predictor"
