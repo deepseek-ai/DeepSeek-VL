@@ -50,7 +50,7 @@
   <a href="#3-model-downloads"><b>📥 Model Download</b></a> |
   <a href="#4-quick-start"><b>⚡ Quick Start</b></a> |
   <a href="#5-license"><b>📜 License</b></a> |
-  <a href="#6-citation"><b>📖 Citation</b></a> |
+  <a href="#6-citation"><b>📖 Citation</b></a> <br>
   <a href="https://arxiv.org/abs/2403.05525"><b>📄 Paper Link</b></a> |
   <a href="https://huggingface.co/papers/2403.05525"><b>🤗 Huggingface Paper Link</b></a> |
   <a href="https://huggingface.co/spaces/deepseek-ai/DeepSeek-VL-7B"><b>👁️ Demo</b></a>
