@@ -34,6 +34,20 @@ gradio = [
     "markdown==3.4.1",
     "SentencePiece==0.1.96"
 ]
+lint = [
+    "isort",
+    "black[jupyter] >= 22.6.0",
+    "pylint[spelling] >= 2.15.0",
+    "flake8",
+    "flake8-bugbear",
+    "flake8-comprehensions",
+    "flake8-docstrings",
+    "flake8-pyi",
+    "flake8-simplify",
+    "ruff",
+    "pyenchant",
+    "pre-commit",
+]
 
 [tool.setuptools]
 packages = {find = {exclude = ["images"]}}
