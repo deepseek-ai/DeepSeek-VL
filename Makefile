@@ -66,6 +66,9 @@ py-format: py-format-install
 	$(PYTHON) -m isort --project $(PROJECT_PATH) --check $(PYTHON_FILES) && \
 	$(PYTHON) -m black --check $(PYTHON_FILES)
 
+black-format: py-format-install
+	$(PYTHON) -m black --check $(PYTHON_FILES)
+
 ruff: ruff-install
 	$(PYTHON) -m ruff check .
 
@@ -85,7 +88,6 @@ lint: ruff flake8 py-format mypy pylint addlicense
 format: py-format-install ruff-install addlicense-install
 	$(PYTHON) -m isort --project $(PROJECT_PATH) $(PYTHON_FILES)
 	$(PYTHON) -m black $(PYTHON_FILES)
-	$(PYTHON) -m ruff check . --fix --exit-zero
 	addlicense -c $(COPYRIGHT) -ignore tests/coverage.xml -l mit -y 2023-$(shell date +"%Y") $(SOURCE_FOLDERS) cli_chat.py inference.py
 
 clean-py:

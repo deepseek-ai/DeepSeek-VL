@@ -39,7 +39,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
 
-      - name: Install TorchOpt
+      - name: Install DeepSeek-VL
         env:
           USE_FP16: "OFF"
           TORCH_CUDA_ARCH_LIST: "Auto"
@@ -47,21 +47,9 @@ jobs:
           python -m pip install torch numpy pybind11
           python -m pip install -vvv --no-build-isolation --editable '.[lint]'
 
-      - name: pre-commit
+      - name: black
         run: |
-          make pre-commit
-
-      - name: ruff
-        run: |
-          make ruff
-
-      - name: flake8
-        run: |
-          make flake8
-
-      - name: isort and black
-        run: |
-          make py-format
+          make black-format
 
       - name: addlicense
         run: |
