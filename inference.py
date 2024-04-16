@@ -24,7 +24,8 @@ from deepseek_vl.models import MultiModalityCausalLM, VLChatProcessor
 from deepseek_vl.utils.io import load_pil_images
 
 # specify the path to the model
-model_path = "deepseek-ai/deepseek-vl-7b-chat"
+# model_path = "deepseek-ai/deepseek-vl-7b-chat"
+model_path = "/hf3fs-jd/prod/deepseek/shared/liuwen/ckpts/deepseek-vl-7b-chat"
 vl_chat_processor: VLChatProcessor = VLChatProcessor.from_pretrained(model_path)
 tokenizer = vl_chat_processor.tokenizer
 
@@ -33,6 +34,7 @@ vl_gpt: MultiModalityCausalLM = AutoModelForCausalLM.from_pretrained(
 )
 vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
 
+# single image conversation example
 conversation = [
     {
         "role": "User",
@@ -42,6 +44,23 @@ conversation = [
     {"role": "Assistant", "content": ""},
 ]
 
+# multiple images (or in-context learning) conversation example
+# conversation = [
+#     {
+#         "role": "User",
+#         "content": "<image_placeholder>A dog wearing nothing in the foreground, "
+#                    "<image_placeholder>a dog wearing a santa hat, "
+#                    "<image_placeholder>a dog wearing a wizard outfit, and "
+#                    "<image_placeholder>what's the dog wearing?",
+#         "images": [
+#             "images/dog_a.png",
+#             "images/dog_b.png",
+#             "images/dog_c.png",
+#             "images/dog_d.png",
+#         ],
+#     },
+#     {"role": "Assistant", "content": ""}
+# ]
 
 # load images and prepare for inputs
 pil_images = load_pil_images(conversation)
