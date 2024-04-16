@@ -24,8 +24,7 @@ from deepseek_vl.models import MultiModalityCausalLM, VLChatProcessor
 from deepseek_vl.utils.io import load_pil_images
 
 # specify the path to the model
-# model_path = "deepseek-ai/deepseek-vl-7b-chat"
-model_path = "/hf3fs-jd/prod/deepseek/shared/liuwen/ckpts/deepseek-vl-7b-chat"
+model_path = "deepseek-ai/deepseek-vl-7b-chat"
 vl_chat_processor: VLChatProcessor = VLChatProcessor.from_pretrained(model_path)
 tokenizer = vl_chat_processor.tokenizer
 
